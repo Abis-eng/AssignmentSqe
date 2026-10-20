@@ -1,97 +1,74 @@
-
 #include <iostream>
+#include <vector>
 #include <string>
+
 using namespace std;
 
-int unusedVariable = 100;
+// Poor naming and hardcoded values
+int max_limit = 100;
+int unused_global_var = 999; 
 
-class Student {
-public:
-    string name;
-    int roll;
-    int marks;
+struct Student {
+    string n; // Poor variable name
+    int m1, m2, m3;
 };
 
-Student students[100];
-int countStudents = 0;
+vector<Student> db; // Poor variable name
 
-void addStudent() {
-    string n;
-    int r, m;
-    cout << "Enter name: ";
-    cin >> n;
-    cout << "Enter roll number: ";
-    cin >> r;
-    cout << "Enter marks: ";
-    cin >> m;
-
-    students[countStudents].name = n;
-    students[countStudents].roll = r;
-    students[countStudents].marks = m;
-    countStudents++;
-}
-
-void displayStudents() {
-    for (int i = 0; i < countStudents; i++) {
-        cout << "Name: " << students[i].name << endl;
-        cout << "Roll: " << students[i].roll << endl;
-        cout << "Marks: " << students[i].marks << endl;
-    }
-}
-
-void searchStudent() {
-    int r;
-    cout << "Enter roll number: ";
-    cin >> r;
-    for (int i = 0; i < countStudents; i++) {
-        if (students[i].roll == r) {
-            cout << "Name: " << students[i].name << endl;
-            cout << "Marks: " << students[i].marks << endl;
+// Very long method with high cyclomatic complexity and code smells
+void manageSystem() {
+    int choice = 1;
+    while (choice != 0) {
+        cout << "1. Add Student\n2. Show\n0. Exit\n";
+        cin >> choice;
+        
+        if (choice == 1) {
+            string name;
+            int marks1, marks2, marks3;
+            cout << "Enter name: ";
+            cin >> name;
+            cout << "Enter marks 3 subjects: ";
+            cin >> marks1 >> marks2 >> marks3;
+            
+            // Hardcoded value check & Magic numbers
+            if (marks1 > 100 || marks2 > 100 || marks3 > 100) {
+                cout << "Invalid marks!\n";
+            } else {
+                Student s;
+                s.n = name;
+                s.m1 = marks1;
+                s.m2 = marks2;
+                s.m3 = marks3;
+                db.push_back(s);
+            }
+        } 
+        else if (choice == 2) {
+            // Duplicate code block 1
+            for(size_t i = 0; i < db.size(); i++) {
+                cout << "Student: " << db[i].n << endl;
+                cout << "Marks: " << db[i].m1 << ", " << db[i].m2 << ", " << db[i].m3 << endl;
+            }
+        }
+        else if (choice == 3) {
+            // Duplicate code block 2 (Intentional duplication for SonarQube)
+            for(size_t i = 0; i < db.size(); i++) {
+                cout << "Student: " << db[i].n << endl;
+                cout << "Marks: " << db[i].m1 << ", " << db[i].m2 << ", " << db[i].m3 << endl;
+            }
         }
     }
 }
 
-void calculateAverage() {
-    int total = 0;
-    for (int i = 0; i < countStudents; i++)
-        total += students[i].marks;
-    cout << "Average: " << total / countStudents << endl;
-}
-
-void highestMarks() {
-    int highest = 0;
-    for (int i = 0; i < countStudents; i++) {
-        if (students[i].marks > highest)
-            highest = students[i].marks;
-    }
-    cout << "Highest marks: " << highest << endl;
+// Unused function (Code Smell)
+void uselessFunction() {
+    int x = 10;
+    int y = 20;
+    int z = x + y;
+    cout << z << endl;
 }
 
 int main() {
-    int choice;
-    int debugValue = 50;
-
-    do {
-        cout << "\n1. Add Student\n2. Display Students\n";
-        cout << "3. Search Student\n4. Average Marks\n";
-        cout << "5. Highest Marks\n0. Exit\n";
-        cout << "Choice: ";
-        cin >> choice;
-
-        if (choice == 1)
-            addStudent();
-        else if (choice == 2)
-            displayStudents();
-        else if (choice == 3)
-            searchStudent();
-        else if (choice == 4)
-            calculateAverage();
-        else if (choice == 5)
-            highestMarks();
-        else if (choice != 0)
-            cout << "Invalid choice\n";
-
-    } while (choice != 0);
-
+    // Missing exception handling
+    manageSystem();
     return 0;
 }
