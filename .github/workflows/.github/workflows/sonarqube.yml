@@ -1,0 +1,22 @@
+name: SonarQube Analysis
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build:
+    name: Build and Analyze
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevance of analysis
+      
+      - name: Set up SonarQube Scanner
+        uses: wrbytes/scan-action@v2 # Or use SonarSource official scanner action
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
